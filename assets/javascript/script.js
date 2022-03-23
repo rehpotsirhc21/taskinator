@@ -1,3 +1,5 @@
+var pageContentEl = document.querySelector("#page-content");
+
 // create a counter for task id
 var taskIdCounter = 0;
 
@@ -64,27 +66,31 @@ var createTaskEl = (taskDataObj) => {
   taskIdCounter++;
 };
 
-var createTaskActions = (taskID) => {
+var createTaskActions = (taskId) => {
   var actionContainerEl = document.createElement("div");
   actionContainerEl.className = "task-actions";
+
   // create button to edit
   var editButtonEl = document.createElement("button");
   editButtonEl.textContent = "Edit";
   editButtonEl.className = "btn edit-btn";
-  editButtonEl.setAttribute("data-task-id", taskID);
+  editButtonEl.setAttribute("data-task-id", taskId);
   actionContainerEl.appendChild(editButtonEl);
+
   // create button to delete
   var deleteButtonEl = document.createElement("button");
   deleteButtonEl.textContent = "Delete";
   deleteButtonEl.className = "btn delete-btn";
-  deleteButtonEl.setAttribute("data-task-id", taskID);
+  deleteButtonEl.setAttribute("data-task-id", taskId);
   actionContainerEl.appendChild(deleteButtonEl);
+
   // create a drop down list
   var statusSelectEl = document.createElement("select");
   statusSelectEl.className = "select-status";
   statusSelectEl.setAttribute("name", "status-change");
-  statusSelectEl.setAttribute("data-task-id", taskID);
+  statusSelectEl.setAttribute("data-task-id", taskId);
   actionContainerEl.appendChild(statusSelectEl);
+
   //create the drop down options
   var statusChoices = ["To do", "In Progress", "Completed"];
   for (let i = 0; i < statusChoices.length; i++) {
@@ -98,3 +104,17 @@ var createTaskActions = (taskID) => {
 
 // listen for the click
 formEl.addEventListener("submit", taskFormHandler);
+
+var taskButtonHandler = () => {
+  
+  if (event.target.matches(".delete-btn")) {
+    var taskId = event.target.getAttribute("data-task-id");
+    delteTask(taskId);
+  }
+};
+
+var delteTask = (taskId) => {
+  var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+  taskSelected.remove();
+};
+pageContentEl.addEventListener("click", taskButtonHandler);
